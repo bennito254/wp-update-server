@@ -44,25 +44,9 @@ This repository contains the backend codebase for a platform that provides **aut
    ```
 
 3. **Add your plugin or theme package(s)**:
-   - Place `.zip` files in a designated directory (e.g., `/packages/`).
-   - Create metadata `.json` files describing each update.
+   - Upload a `.zip` file through the easy-to-use interface.
+   - Everything else will be set up and updated according to the plugin/theme metadata.
 
-4. **Configure your update endpoints**:
-   - Modify `index.php` or use routes to serve different plugins/themes.
-   - Example URL: `https://yourdomain.com/?action=get_metadata&slug=my-plugin`
-
-### Plugin Metadata Example
-
-```json
-{
-  "version": "1.2.3",
-  "details_url": "https://yourdomain.com/details/my-plugin",
-  "download_url": "https://yourdomain.com/packages/my-plugin-1.2.3.zip",
-  "requires": "5.2",
-  "tested": "6.5",
-  "upgrade_notice": "Minor bug fixes and improvements."
-}
-```
 
 ### Client Side Example
 
