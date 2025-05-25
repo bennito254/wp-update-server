@@ -1,0 +1,35 @@
+{
+	"name": "yahnis-elsts/wp-update-server-stats",
+	"description": "Gather statistics from wp-update-server logs.",
+	"type": "project",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Yahnis Elsts",
+			"email": "whiteshadow@w-shadow.com",
+			"role": "Developer"
+		}
+	],
+
+	"autoload": {
+		"psr-4": {
+			"Wpup\\": "src/"
+		}
+	},
+
+	"require": {
+		"php": ">=5.6",
+		"ext-pdo_sqlite": "*",
+		"ext-PDO": "*",
+		"ext-json": "*",
+		"twbs/bootstrap": "^3.3",
+		"components/jquery": "^3.1",
+		"moment/moment": "^2.17"
+	},
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true,
+			"oomphinc/composer-installers-extender": false
+		}
+	}
+}
