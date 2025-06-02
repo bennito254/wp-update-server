@@ -34,7 +34,7 @@ This repository contains the backend codebase for a platform that provides **aut
 
 1. **Clone this repository**:
    ```bash
-   git clone https://github.com/yourusername/private-wp-update-server.git
+   git clone https://github.com/bennito254/wp-update-server.git
    cd private-wp-update-server
    ```
 
@@ -58,7 +58,7 @@ require 'vendor/autoload.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
     'https://yourdomain.com/?action=get_metadata&slug=my-plugin',
     __FILE__,
-    'my-plugin'
+    'my-plugin_or_theme_slug'
 );
 ```
 
@@ -71,7 +71,6 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 ## Resources
 
 - [plugin-update-checker Documentation](https://github.com/YahnisElsts/plugin-update-checker)
-- [wp-update-server Documentation](https://github.com/YahnisElsts/wp-update-server)
 - [WordPress Plugin Developer Handbook](https://developer.wordpress.org/plugins/)
 
 ## License

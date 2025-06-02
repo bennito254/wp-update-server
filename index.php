@@ -1,5 +1,14 @@
 <?php
 
+//Check if the app is installed
+if (!file_exists(__DIR__ . '/core/.env')) {
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    $domain = $_SERVER['HTTP_HOST'];
+    $url = $protocol . $domain;
+    header('Location: '.$url.'/installer.php');
+    exit;
+}
+
 use CodeIgniter\Boot;
 use Config\Paths;
 
