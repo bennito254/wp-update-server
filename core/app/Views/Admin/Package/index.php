@@ -21,6 +21,7 @@ $packages = model(PackagesModel::class)->findAll();
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
+                                <th>Type</th>
                                 <th>Latest Version</th>
                                 <th>Times Downloaded</th>
                                 <th>Active Installs</th>
@@ -36,6 +37,7 @@ $packages = model(PackagesModel::class)->findAll();
                                 <tr>
                                     <td><?php echo $n; ?></td>
                                     <td><?php echo $package->title; ?></td>
+                                    <td><?php echo $package->getPackageLabel(); ?></td>
                                     <td><?php echo $package->version; ?></td>
                                     <td><?php echo '-'; ?></td>
                                     <td><?php echo $package->getActiveInstalls(); ?></td>
@@ -60,22 +62,8 @@ $packages = model(PackagesModel::class)->findAll();
         </div>
     </div>
     <div class="col-md-3 order-1 order-md-2">
-        <div class="card">
-            <div class="card-header">
-                <div class="row align-items-center">
-                    <h4 class="card-title">Upload Package</h4>
-                </div>  <!--end row-->
-            </div><!--end card-header-->
-            <div class="card-body pt-0">
-                <form method="post" action="<?php echo route('admin.package.create') ?>" enctype="multipart/form-data">
-                    <input type="hidden" name="_file_upload" value="bennito">
-                    <div class="form-group mb-3">
-                        <label for="plugin" class="form-label">Package (Zip File) <span class="text-danger">*</span> </label>
-                        <input type="file" class="form-control" accept=".zip" name="plugin" required="required" placeholder="Please select a file" />
-                    </div>
-                    <button type="submit" class="btn btn-primary">Upload</button>
-                </form>
-            </div><!--end card-body-->
-        </div><!--end card-->
+        <?php
+        echo view('Admin/Package/_uploadView');
+        ?>
     </div>
 </div>

@@ -37,6 +37,12 @@ class UserEntity extends \CodeIgniter\Entity\Entity
         return uploads_url('avatar/'.$this->attributes['avatar']);
     }
 
+    public function deleteAvatar()
+    {
+        $path = UPLOADS_DIR.'avatar'.DIRECTORY_SEPARATOR;
+        @unlink($path.$this->attributes['avatar']);
+    }
+
     public function getGroups()
     {
         return (new Auth())->groups($this->attributes['id'])->result();

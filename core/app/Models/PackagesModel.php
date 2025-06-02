@@ -14,7 +14,7 @@ class PackagesModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'author', 'title', 'slug', 'banners', 'icons', 'sections',
+        'author', 'title', 'type', 'slug', 'banners', 'icons', 'sections',
     ];
 
     protected bool $allowEmptyInserts = false;

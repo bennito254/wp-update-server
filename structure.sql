@@ -53,6 +53,7 @@ CREATE TABLE `packages` (
         `author` int(11) DEFAULT NULL,
         `title` varchar(255) NOT NULL,
         `slug` varchar(255) NOT NULL,
+        `type` varchar(255) NOT NULL DEFAULT 'plugin',
         `banners` text DEFAULT NULL,
         `icons` text DEFAULT NULL,
         `sections` text DEFAULT NULL,

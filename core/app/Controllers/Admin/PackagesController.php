@@ -27,9 +27,22 @@ class PackagesController extends AdminController
         try {
             $updateServer->processUpload();
 
-            return redirect()->back()->with('message', 'Upload successfully');
+            //return redirect()->back()->with('success', 'Package uploaded successfully');
+            return $this->response->setContentType('application/json')->setBody(json_encode([
+                'status' => "success",
+                'message' => "Package uploaded successfully.",
+                'title'     => "Success!",
+                'notifyType' => "swal",
+                'callback' => "window.location.reload()",
+            ]));
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', $e->getMessage());
+            //return redirect()->back()->withInput()->with('error', $e->getMessage());
+            return $this->response->setContentType('application/json')->setBody(json_encode([
+                'status' => "error",
+                'title'     => "Error!",
+                'message' => $e->getMessage() ?: "Failed to upload package.",
+                'notifyType' => "toastr",
+            ]));
         }
     }
 

@@ -23,7 +23,7 @@ $packages = model(PackagesModel::class)->findAll();
     </div>
     <div class="card-body pt-0">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="table-responsive" style="max-height: 400px; overflow-y: scroll">
@@ -58,9 +58,9 @@ $packages = model(PackagesModel::class)->findAll();
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <canvas id="doughnut" height="300"></canvas>
-            </div>
+<!--            <div class="col-md-3">-->
+<!--                <canvas id="doughnut" height="300"></canvas>-->
+<!--            </div>-->
         </div>
     </div>
 </div>
@@ -213,24 +213,25 @@ $packages = model(PackagesModel::class)->findAll();
     </div>
 
 <?php
-add_action('styles', function () {
+add_action('scripts', function () use ($packages) {
+    $data = (new \App\Libraries\Reports())->getSlugCountsPerMonth();
+    $labels = [];
+    $counts = [];
+    foreach ($data as $datum) {
+        $labels[] = $datum->month;
+        $counts[] = $datum->total;
+    }
     ?>
-    <link href="<?php echo assets_url('libs/daterangepicker/daterangepicker.css') ?>" rel="stylesheet" type="text/css" />
-        <?php
-});
-add_action('scripts', function () {
-    ?>
-    <script src="<?php echo assets_url('libs/daterangepicker/daterangepicker.js') ?>"></script>
     <script>
         $(function() {
             var overviewLineChart = document.getElementById("overviewLineChart").getContext("2d");
             var myChart = (Chart.defaults.font.family = "Be Vietnam Pro", new Chart(overviewLineChart, {
                     type: "line",
                     data: {
-                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        labels: <?php echo json_encode($labels); ?>,
                         datasets: [{
-                            label: "Monthly Report",
-                            data: [12, 19, 13, 9, 12, 11, 12, 19, 13, 9, 12, 11],
+                            label: "Access Count",
+                            data: <?php echo json_encode($counts) ?>,
                             backgroundColor: ["#22c55e"],
                             borderColor: ["#22c55e"],
                             borderWidth: 2,
@@ -238,19 +239,6 @@ add_action('scripts', function () {
                             borderJoinStyle: "round",
                             borderCapStyle: "round",
                             pointBorderColor: "#22c55e",
-                            pointRadius: 3,
-                            pointBorderWidth: 1,
-                            tension: .3
-                        }, {
-                            label: "Monthly Report",
-                            data: [8, 12, 15, 11, 8, 14, 16, 13, 10, 7, 19, 16],
-                            backgroundColor: ["#fac146"],
-                            borderColor: ["#fac146"],
-                            borderWidth: 2,
-                            borderDash: [0],
-                            borderJoinStyle: "round",
-                            borderCapStyle: "round",
-                            pointBorderColor: "#fac146",
                             pointRadius: 3,
                             pointBorderWidth: 1,
                             tension: .3
@@ -285,26 +273,26 @@ add_action('scripts', function () {
                     }
                 }));
 
-            var overviewDonut = document.getElementById("doughnut").getContext("2d");
-            var myChart = (Chart.defaults.font.family = "Be Vietnam Pro", new Chart(overviewDonut, {
-                    type: "doughnut",
-                    data: {
-                        labels: ["Desktops", "Laptop", "Tablets", "Mobiles"],
-                        datasets: [{
-                            data: [80, 50, 100, 121],
-                            backgroundColor: ["#f67f7f", "#7777f0", "#fac146", "#22c55e"],
-                            cutout: 100,
-                            radius: 80,
-                            borderColor: "transparent",
-                            borderRadius: 0,
-                            hoverBackgroundColor: ["#4d79f6", "#ff5da0", "#e0e7fd", "#4ac7ec"]
-                        }]
-                    },
-                    options: {
-                        maintainAspectRatio: !1,
-                        plugins: {legend: {labels: {color: "#7c8ea7", font: {family: "Be Vietnam Pro"}}}}
-                    }
-                }));
+            // var overviewDonut = document.getElementById("doughnut").getContext("2d");
+            // var myChart = (Chart.defaults.font.family = "Be Vietnam Pro", new Chart(overviewDonut, {
+            //         type: "doughnut",
+            //         data: {
+            //             labels: ["Desktops", "Laptop", "Tablets", "Mobiles"],
+            //             datasets: [{
+            //                 data: [80, 50, 100, 121],
+            //                 backgroundColor: ["#f67f7f", "#7777f0", "#fac146", "#22c55e"],
+            //                 cutout: 100,
+            //                 radius: 80,
+            //                 borderColor: "transparent",
+            //                 borderRadius: 0,
+            //                 hoverBackgroundColor: ["#4d79f6", "#ff5da0", "#e0e7fd", "#4ac7ec"]
+            //             }]
+            //         },
+            //         options: {
+            //             maintainAspectRatio: !1,
+            //             plugins: {legend: {labels: {color: "#7c8ea7", font: {family: "Be Vietnam Pro"}}}}
+            //         }
+            //     }));
 
             var start = moment().subtract(29, 'days');
             var end = moment();

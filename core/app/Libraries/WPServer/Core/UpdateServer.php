@@ -159,6 +159,7 @@ class UpdateServer {
         $destination = WP_SERVER_DIRECTORY.'packages'.DIRECTORY_SEPARATOR;
         $request = \Config\Services::request();
         $file = $request->getFile('plugin');
+        log_message('critical', json_encode($request->getFiles()));
 
         $fileName = $file->getRandomName();
         if ($file->isValid() && !$file->hasMoved()) {
@@ -167,6 +168,7 @@ class UpdateServer {
 
                 $obj = new \App\Libraries\WPServer\Core\ZipMetadataParser($file->getPathname());
                 $metadata = $obj->get();
+
                 $model = model(PackagesModel::class);
 
                 //If slug is not available, create
@@ -177,6 +179,7 @@ class UpdateServer {
                         'author'        => null,
                         'title'         => $metadata['name'],
                         'slug'          => $metadata['slug'],
+                        'type'          => $metadata['type'],
                         'banners'       => null,
                         'icons'         => null,
                         'sections'      => null,
@@ -190,30 +193,30 @@ class UpdateServer {
                 if ($versionsModel->where('package_id', $package->id)->where('version', $metadata['version'])->countAllResults() == 0) {
                     $newName = $metadata['slug'].'-'.$metadata['version'].'.zip';
                     $file->move($destination, $newName, true);
-                    $versionsModel->save([
+
+                    if(file_exists($destination.$fileName)) {
+                        @unlink($destination.$fileName);
+                    }
+
+                    return $versionsModel->save([
                         'package_id' => $package->id,
                         'version'    => $metadata['version'],
                         'file'   => $newName,
                         'metadata' => json_encode($metadata),
                     ]);
-
-                    if(file_exists($destination.$fileName)) {
-                        @unlink($destination.$fileName);
-                    }
-
-                    return TRUE;
-
-                } else {
-                    if(file_exists($destination.$fileName)) {
-                        @unlink($destination.$fileName);
-                    }
-
-                    throw new \Exception('Version already exists');
                 }
+
+                if(file_exists($destination.$fileName)) {
+                    @unlink($destination.$fileName);
+                }
+
+                throw new \Exception('Version already exists');
             }
+
+            throw new \Exception("Could not upload the file to server packages directory");
         }
 
-        throw new \Exception('Unable to upload file');
+        throw new \Exception($file->getErrorString() ?: 'Unable to upload file');
     }
 
 	/**

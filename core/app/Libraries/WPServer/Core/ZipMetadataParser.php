@@ -230,6 +230,7 @@ class ZipMetadataParser {
 	protected function setSlug(){
 		$mainFile = $this->packageInfo['type'] === 'plugin' ? $this->packageInfo['pluginFile'] : $this->packageInfo['stylesheet'];
 		$this->metadata['slug'] = basename(dirname(strtolower($mainFile)));
+        $this->metadata['type'] = $this->packageInfo['type'];
 		//Idea: Warn the user if the package doesn't match the expected "/slug/other-files" layout.
 	}
 

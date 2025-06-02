@@ -18,6 +18,14 @@ class PackageEntity extends Entity
     protected $_options = [];
     private $_latestVersion;
 
+    public function getPackageLabel()
+    {
+        if ($this->attributes['type'] == 'plugin') {
+            return '<span class="badge bg-primary fs-6">Plugin</span>';
+        }
+
+        return '<span class="badge bg-orange fs-6">Theme</span>';
+    }
     public function getSections()
     {
         $sections = $this->attributes['sections'];

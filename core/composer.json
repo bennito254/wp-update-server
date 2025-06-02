@@ -14,6 +14,7 @@
         "ext-pdo": "*",
         "ext-zip": "*",
         "codeigniter4/framework": "^4.0",
+        "phpmailer/phpmailer": "^6.10",
         "sonata-project/google-authenticator": "^2.3"
     },
     "require-dev": {

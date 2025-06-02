@@ -6,6 +6,28 @@ use App\Models\UpdateLogsModel;
 
 class Reports
 {
+
+    /**
+     * Returns the access count per package in a month
+     *
+     * @return array
+     */
+    public function getSlugCountsPerMonth(): array
+    {
+        $model = model(UpdateLogsModel::class);
+        return $model->select("DATE_FORMAT(STR_TO_DATE(`created_at`, '%Y-%m-%d %H:%i:%s'), '%Y-%m') AS month, slug, COUNT(*) AS total")
+            //->groupBy("month, slug")
+            ->groupBy("month")
+            ->orderBy("month", "ASC")
+            ->orderBy("slug", "ASC")
+            ->findAll();
+    }
+
+    /**
+     * Return metrics of the requesting server, installed package version, wordpress version and PHP version
+     *
+     * @return array
+     */
     public function getSoftwares()
     {
         $model = model(UpdateLogsModel::class);

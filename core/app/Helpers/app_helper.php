@@ -154,30 +154,31 @@ function isPublicIpAddress($ip) {
     return true; // Valid if it's a public IP
 }
 
-/**
- * @throws Exception
- */
-function uploadFile($key, $destination, $file_name = FALSE) {
-    $request = request();
-    $file = $request->getFile($key);
 
-    if (!$file) return FALSE;
+function getMinimumUploadLimit(): string
+{
+    // Helper to convert shorthand sizes to bytes
+    $convertToBytes = function ($val) {
+        $val = trim($val);
+        $last = strtolower($val[strlen($val) - 1]);
+        $num = (int)$val;
 
-    if ($file->isValid() && !$file->hasMoved()) {
-        $newName = $file_name ? $file_name.'.'.$file->getExtension() : $file->getRandomName();
-        //TODO: Check if we're trying to write outside the FCPATH
-        if (!is_dir($destination)) {
-            mkdir($destination, 0777, true);
+        switch ($last) {
+            case 'g':
+                $num *= 1024;
+            case 'm':
+                $num *= 1024;
+            case 'k':
+                $num *= 1024;
         }
+        return $num;
+    };
 
-        if (!is_dir($destination) || !is_writable($destination)) {
-            throw new \Exception("Destination does not exist or is not writable");
-        }
+    $postMaxSize = ini_get('post_max_size');
+    $uploadMaxFilesize = ini_get('upload_max_filesize');
 
-        if ($file->move($destination, $newName, true)) {
-            return $newName;
-        }
-    }
+    $postMaxBytes = $convertToBytes($postMaxSize);
+    $uploadMaxBytes = $convertToBytes($uploadMaxFilesize);
 
-    return FALSE;
+    return ($postMaxBytes < $uploadMaxBytes) ? $postMaxSize : $uploadMaxFilesize;
 }
