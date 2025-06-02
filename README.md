@@ -50,17 +50,19 @@ This repository contains the backend codebase for a platform that provides **aut
 
 ### Client Side Example
 
-In your WordPress plugin:
+Set up the update checker. Check [plugin-update-checker Documentation](https://github.com/YahnisElsts/plugin-update-checker) on how to do it.
+In your WordPress plugin, copy the following code in your plugin main file or your theme's `functions.php` file:
 
 ```php
 require 'vendor/autoload.php';
 
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-    'https://yourdomain.com/?action=get_metadata&slug=my-plugin',
+    'https://yourdomain.com/?action=get_metadata&slug=my-plugin_or_theme_slug',
     __FILE__,
     'my-plugin_or_theme_slug'
 );
 ```
+Replace the URL in the code above with the `Update URL` shown in the Plugin/Theme page on the Update Server
 
 ## Security Considerations
 
